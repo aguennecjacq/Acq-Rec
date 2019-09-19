@@ -173,7 +173,7 @@ std::vector<Face> pgm3DToFaces(const std::string &path) {
                     }
                         //création d'une nouvelle face dans le cas ou il y a une différence de couleurs
                     if ((currentColor-comparedColor) != 0){
-                        newFace = Face(1,position,currentColor);
+                        newFace = Face(1,position,currentColor/colorMax);
                         result.push_back(newFace);
                     }
                     //face gauche
@@ -183,7 +183,7 @@ std::vector<Face> pgm3DToFaces(const std::string &path) {
                         comparedColor = image3D[i-1][j][k];
                     }
                     if ((currentColor-comparedColor) != 0){
-                        newFace = Face(2,position,currentColor);
+                        newFace = Face(2,position,currentColor/colorMax);
                         result.push_back(newFace);
                     }
                     //face avant
@@ -193,7 +193,7 @@ std::vector<Face> pgm3DToFaces(const std::string &path) {
                         comparedColor = image3D[i][j+1][k];
                     }
                     if ((currentColor - comparedColor) != 0) {
-                        newFace = Face(3,position,currentColor);
+                        newFace = Face(3,position,currentColor/colorMax);
                         result.push_back(newFace);
                     }
 
@@ -204,7 +204,7 @@ std::vector<Face> pgm3DToFaces(const std::string &path) {
                         comparedColor = image3D[i][j-1][k] ;
                     }
                     if ((currentColor - comparedColor) != 0) {
-                        newFace = Face(4,position,currentColor);
+                        newFace = Face(4,position,currentColor/colorMax);
                         result.push_back(newFace);
                     }
                     //face dessus
@@ -214,7 +214,7 @@ std::vector<Face> pgm3DToFaces(const std::string &path) {
                         comparedColor = image3D[i][j][k+1];
                     }
                     if ((currentColor - comparedColor) != 0) {
-                        newFace = Face(5,position,currentColor);
+                        newFace = Face(5,position,currentColor/colorMax);
                         result.push_back(newFace);
                     }
 
@@ -225,7 +225,7 @@ std::vector<Face> pgm3DToFaces(const std::string &path) {
                         comparedColor = image3D[i][j][k-1] ;
                     }
                     if ((currentColor - comparedColor) != 0) {
-                        newFace = Face(6,position,currentColor);
+                        newFace = Face(6,position,currentColor/colorMax);
                         result.push_back(newFace);
                     }
             }

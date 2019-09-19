@@ -156,7 +156,7 @@ std::vector<Face> pgm3DToFaces(const std::string &path) {
 
     for (k= 0 ; k< sizeZ ; k++) {
         for(j=0 ; j<sizeY ; j++) {
-            for (i=0 ; i <sizeX ; i++ ){
+            for (i=0 ; i <sizeX ;i++){
                     //mise a jours de la position (avec centrage en 0) et couleur du voxel
                     x = i- sizeX*0.5;
                     y = j- sizeY*0.5;

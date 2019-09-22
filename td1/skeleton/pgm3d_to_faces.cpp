@@ -104,7 +104,17 @@ public:
     return result;
   }
 };
-
+//fonction pour ignorer les commentaires
+void skipComment(std::stringstream &ss){
+    char c;
+    char str[110];
+    ss >> c;
+    while (c == '#'){
+        ss.getline(str,100);
+        ss >> c;
+    }
+    ss.putback(c);
+}
 //this is the function we coded that returns an object of type vector of Faces
 std::vector<Face> pgm3DToFaces(const std::string &path) {
   std::vector<Face> result = {};
@@ -122,25 +132,64 @@ std::vector<Face> pgm3DToFaces(const std::string &path) {
   std::stringstream ss; //buffer
 
   getline(infile,inputLine);
-  //Message d'erreur en cas de mauvais header
+  //ERROR : Message d'erreur en cas de mauvais header
   if (inputLine != "PGM3D"){
-        std::cerr << "mauvais format de fichier !" << std::endl;
+        std::cerr << "ERROR : mauvais format de fichier !" << std::endl;
         exit(EXIT_FAILURE);
     }
 
     //mise en place du buffer
     ss << infile.rdbuf();
+
+    //skip du potentiel commentaire
+    skipComment(ss);
+
     //on récupère les dimension de l'image
     ss >> sizeX >> sizeY >> sizeZ ;
+
+    //skip du potentiel commentaire
+    skipComment(ss);
+
+    //ERROR TEST : dimensions sont positive
+    if ((sizeX<=0)||(sizeY<=0)||(sizeZ<=0)){
+        std::cerr << "ERROR :erreur dimensions de l'image (dimension négative,flottante) !" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
     //on récupère la hauteur de couleur max
     ss >> colorMax ;
+    //ERROR TEST : couleur max est positive
+    if (colorMax <= 0) {
+        std::cerr << "ERROR : CouleurMax négatif ou nul ?!" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
     //initialisation de l'array 3D
     float image3D[sizeX][sizeY][sizeZ];
     //insertion des éléments dans le tableau 3D
     for (k= 0 ; k< sizeZ ; k++) {
         for(j=0 ; j<sizeY ; j++) {
             for (i=0 ;i<sizeX ; i++) {
+                //skip des commentaire en plein millieu de l'image
+                skipComment(ss);
+                //insertion d'un élément dans le tableau 3D
                 ss >> image3D[i][j][k];
+
+                //ERROR : DIMENSIONS
+                if (ss.good() != true) {
+                    std::cerr << "ERROR : fin du stream avant la fin de la construction de l'image" << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+
+                //ERROR : COLOR PROBLEM
+                if (image3D[i][j][k] > colorMax) {
+                    std::cerr << "Erreur : voxel avec une couleur " << std::endl;
+                    exit(EXIT_FAILURE);
+                }
+                if (image3D[i][j][k] <0) {
+                    std::cerr << "Erreur : voxel avec une couleur négative "<< std::endl;
+                    exit(EXIT_FAILURE);
+                }
             }
         }
     }

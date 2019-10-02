@@ -16,6 +16,7 @@ void usage(int argc, char **argv) {
 }
 
 int main(int argc, char **argv) {
+	//Equivalent a QApplication app = QApplication(argc, argv);
   QApplication app(argc, argv);
   if (argc > 2) {
     usage(argc, argv);

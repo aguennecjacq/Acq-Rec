@@ -24,4 +24,8 @@ protected:
   void mouseMoveEvent(QMouseEvent *event) override;
 
   FaceCollection face_collection;
+  
+  //Variables de l'environement
+  QVector3D observer;
+  
 };

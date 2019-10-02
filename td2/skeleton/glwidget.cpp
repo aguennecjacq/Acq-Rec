@@ -7,7 +7,8 @@
 
 #include <iostream>
 
-GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent) {}
+GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent) {
+}
 
 GLWidget::~GLWidget() {}
 
@@ -25,7 +26,11 @@ void GLWidget::loadFaces(const QString &path) {
 }
 
 void GLWidget::initializeGL() {
-  // TODO: initialize the OpenGL to display 3d data
+  glClearColor(0,0,0,0);                   // Set backGround color
+  glShadeModel(GL_SMOOTH);
+  glEnable(GL_DEPTH_TEST);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glDisable(GL_CULL_FACE);	//Make sure to get transparency of the back of the faces
 }
 
 void GLWidget::paintGL() {
